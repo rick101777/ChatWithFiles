@@ -4,6 +4,7 @@ public class Node implements NodeInterface {
 	
 	private Socket socket;
 	private String name;
+	private int ListeningPort;
 	private String Message = null;
 	
 	public Node() {
@@ -13,6 +14,12 @@ public class Node implements NodeInterface {
 	public Node(Socket socket, String name) {
 		this.socket = socket;
 		this.name = name;
+	}
+	
+	public Node(Socket socket, String name, int ListeningPort) {
+		this.socket = socket;
+		this.name = name;
+		this.ListeningPort = ListeningPort;
 	}
 	
 
@@ -54,7 +61,7 @@ public class Node implements NodeInterface {
 	}
 
 	@Override
-	public int hashcode() {
+	public int hashCode() {
 		int result = 17;
 		result = 31 * result + this.socket.hashCode();
 		result = 31 * result + this.name.hashCode();
@@ -70,6 +77,16 @@ public class Node implements NodeInterface {
 	@Override
 	public void setMessage(String Message) {
 		this.Message = Message;
+	}
+
+	@Override
+	public void setListeningPort(int ListeningPort) {
+		this.ListeningPort = ListeningPort;
+	}
+
+	@Override
+	public int getListeningPort() {
+		return this.ListeningPort;
 	}
 
 		

@@ -16,9 +16,7 @@ public interface NodeInterface {
 	
 	public void printContents();
 	
-	public boolean equals(Object object);
+	public void setListeningPort(int ListeningPort) ;
 	
-	public int hashcode();
-	
-	
+	public int getListeningPort();
 }

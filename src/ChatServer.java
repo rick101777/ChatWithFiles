@@ -39,12 +39,14 @@ public class ChatServer {
 				PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
 				writer.println("Enter your Username: ");
 				String name = null;
+				int ListeningPort = 0;
 				do {
 					name = input.readLine();
-				}while(name == null);
+					ListeningPort = Integer.parseInt(input.readLine());
+				}while(name == null && ListeningPort == 0);
 				System.out.println("Got name");
 				System.out.println(name);
-				Node client = new Node(clientSocket, name);
+				Node client = new Node(clientSocket, name, ListeningPort);
 				Data.addToArray(client);
 				inputThread Threadin = new inputThread(client);
 				inputThread = new Thread(Threadin);

@@ -18,7 +18,8 @@ public class ChatClient{
 		PrintWriter writer = null;
 		Thread t1 = null;
 		try {
-			int portNumber = Integer.valueOf(args[0]);
+			int ListeningPort = Integer.valueOf(args[1]);
+			int portNumber = Integer.valueOf(args[3]);
 			System.out.println(portNumber);
 			Socket ServerSocket = new Socket("localhost", portNumber);
 			System.out.println("Client Connection Established");
@@ -28,9 +29,29 @@ public class ChatClient{
 			
 			standardInput = new BufferedReader(new InputStreamReader(System.in));
 			writer = new PrintWriter(ServerSocket.getOutputStream(), true);
+			String Name = standardInput.readLine();
+			writer.println(Name);
+			writer.println(ListeningPort);
 			String userMessage;
-			while((userMessage = standardInput.readLine()) != null) {
-				writer.println(userMessage);
+			while(true) {
+				System.out.println("Enter an option ('m', 'f', 'x'):\n"
+						+ "(M)essage (send)\n"
+						+ "(F)ile (request)\n"
+						+ "e(X)it");
+				userMessage = standardInput.readLine();
+				if (userMessage.equals("m")) {
+					System.out.println("Enter your message: ");
+					userMessage = standardInput.readLine();
+					writer.println(userMessage);
+				}
+				if (userMessage.equals("f")) {
+					// [1] Name of the User 
+					// [2] File name
+				}
+				if (userMessage.equals("x")) {
+					writer.println("x");
+					break;
+				}
 			}
 			
 			Threadin.Exiting();
