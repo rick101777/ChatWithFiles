@@ -40,13 +40,27 @@ public class ChatClient{
 						+ "e(X)it");
 				userMessage = standardInput.readLine();
 				if (userMessage.equals("m")) {
+					writer.println("m");
 					System.out.println("Enter your message: ");
 					userMessage = standardInput.readLine();
 					writer.println(userMessage);
 				}
 				if (userMessage.equals("f")) {
-					// [1] Name of the User 
-					// [2] File name
+					writer.println("f");
+					System.out.println("Who owns the file?");
+					userMessage = standardInput.readLine();
+					writer.println(userMessage);
+					System.out.println("Which file do you want?");
+					userMessage = standardInput.readLine();
+					writer.println(userMessage);
+					FileRequestHandlerThread temp = new FileRequestHandlerThread(ListeningPort, userMessage);
+					Thread request = new Thread(temp);
+					request.start();
+					try {
+						request.join();
+					}catch(InterruptedException ie) {
+						
+					}
 				}
 				if (userMessage.equals("x")) {
 					writer.println("x");
@@ -103,9 +117,22 @@ class InputThread implements Runnable{
 		try {
 			input = new BufferedReader(new InputStreamReader(ServerSocket.getInputStream()));
 			String line = input.readLine();
+			System.out.println(line);
 			while (ShouldContinue) {
-				System.out.println(line);
 				line = input.readLine();
+				if (line.equals("f")) {
+					String ListeningPort = input.readLine();
+					line = input.readLine();
+					FileResponseHandlerThread temp = new FileResponseHandlerThread(Integer.parseInt(ListeningPort), line);
+					Thread response = new Thread(temp);
+					response.start();
+					try {
+						response.join();
+					}catch(InterruptedException ie) {
+						
+					}
+				}
+				System.out.println(line);
 			}
 			input.close();
 		}catch (IOException e) {

@@ -85,10 +85,36 @@ class inputThread implements Runnable{
 			PrintWriter writer = new PrintWriter(client.getSocket().getOutputStream(), true);
 			input = new BufferedReader(new InputStreamReader(client.getSocket().getInputStream()));
 			String line;
-			while ((line = input.readLine()) != null) {
-				client.setMessage(line);
-				Data.addToQueue(client);
-				
+			while (true) {
+				line = input.readLine();
+				if (line.equals("m")) {
+					line = input.readLine();
+					client.setMessage(line);
+					Data.addToQueue(client);
+				}
+				if (line.equals("f")) {
+					line = input.readLine();
+					int DataSize = Data.getSize();
+					for (int i = 0; i < DataSize; i++) {
+						if (Data.getElementAtIndex(i).getName().equals(line)) {
+							PrintWriter temp = new PrintWriter(Data.getElementAtIndex(i).getSocket().getOutputStream(), true);
+							temp.println("f");
+							int port = -1;
+							for (int j = 0; j < DataSize; j++) {
+								if (Data.getElementAtIndex(j).getSocket().equals(this.client.getSocket())) {
+									port = client.getListeningPort();
+								}
+							}
+							temp.println(port);
+							line = input.readLine();
+							temp.println(line);
+						}
+					}
+					
+				}
+				if (line.equals("x")) {
+					break;
+				}			
 			}
 			Data.remove(client);
 		}catch(IOException e) {
