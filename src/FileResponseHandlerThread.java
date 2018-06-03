@@ -18,7 +18,9 @@ public class FileResponseHandlerThread implements Runnable {
 	
 	public FileResponseHandlerThread(int FilePort, String Filename) throws IOException {
 		Server = new ServerSocket(FilePort);
+		System.out.println("Listening for connections on Port: " + FilePort);
 		Client = Server.accept();
+		System.out.println("File Response Connection Established");
 		Server.close();
 		this.Filename = Filename;
 		input = new DataInputStream(Client.getInputStream());

@@ -67,6 +67,7 @@ public class ChatClient{
 					break;
 				}
 			}
+			ServerSocket.close();
 			
 			Threadin.Exiting();
 			writer.close();

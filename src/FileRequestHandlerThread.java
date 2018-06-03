@@ -13,7 +13,11 @@ public class FileRequestHandlerThread implements Runnable {
 	private final static int size = 2056;
 	
 	public FileRequestHandlerThread(int FilePort, String Filename) throws IOException{
+		try {
+			Thread.sleep(1000);
+		}catch(InterruptedException ie) {}
 		Client = new Socket("localhost", FilePort);
+		System.out.println("File RequestConnection Established");
 		this.Filename = Filename;
 		input = new DataInputStream(Client.getInputStream());
 		output = new DataOutputStream(Client.getOutputStream());

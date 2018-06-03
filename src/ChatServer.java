@@ -46,6 +46,7 @@ public class ChatServer {
 				}while(name == null && ListeningPort == 0);
 				System.out.println("Got name");
 				System.out.println(name);
+				System.out.println("Got Listening Port: " + ListeningPort);
 				Node client = new Node(clientSocket, name, ListeningPort);
 				Data.addToArray(client);
 				inputThread Threadin = new inputThread(client);
@@ -97,15 +98,10 @@ class inputThread implements Runnable{
 					int DataSize = Data.getSize();
 					for (int i = 0; i < DataSize; i++) {
 						if (Data.getElementAtIndex(i).getName().equals(line)) {
+							System.out.println(Data.getElementAtIndex(i).getName());
 							PrintWriter temp = new PrintWriter(Data.getElementAtIndex(i).getSocket().getOutputStream(), true);
 							temp.println("f");
-							int port = -1;
-							for (int j = 0; j < DataSize; j++) {
-								if (Data.getElementAtIndex(j).getSocket().equals(this.client.getSocket())) {
-									port = client.getListeningPort();
-								}
-							}
-							temp.println(port);
+							temp.println(this.client.getListeningPort());
 							line = input.readLine();
 							temp.println(line);
 						}
@@ -145,8 +141,8 @@ class outputThread implements Runnable{
 		while (true) {
 			try {
 				Thread.sleep(100);
-			}catch(Exception e) {
-				System.err.println(e.getMessage());
+			}catch(InterruptedException ie) {
+				
 			}
 			if (!Data.isQueueEmpty()) {
 				Node From = Data.removeFromQueue();
